@@ -1,21 +1,10 @@
 set nocompatible
 filetype off
 
-set rtp+=~/.vim/bundle/Vundle.vim
+if filereadable(expand("~/.vimrc.bundles"))
+  source ~/.vimrc.bundles
+endif
 
-call vundle#begin()
-Plugin 'gmarik/Vundle.vim'
-Plugin 'rodjek/vim-puppet'
-Plugin 'tpope/vim-rails.git'
-Plugin 'stephpy/vim-yaml'
-Plugin 'vim-ruby/vim-ruby'
-Plugin 'oblitum/rainbow'
-Plugin 'The-NERD-Commenter'
-Plugin 'vimux'
-Plugin 'jgdavey/vim-turbux'
-
-call vundle#end()
-filetype plugin indent on 
 let g:rainbow_active = 1
 
 syntax on
