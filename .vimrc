@@ -1,16 +1,31 @@
 set nocompatible
 filetype off
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim
 
-filetype plugin indent on
+call vundle#begin()
+Plugin 'gmarik/Vundle.vim'
+Plugin 'rodjek/vim-puppet'
+Plugin 'tpope/vim-rails.git'
+Plugin 'stephpy/vim-yaml'
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'oblitum/rainbow'
+Plugin 'The-NERD-Commenter'
+Plugin 'vimux'
+Plugin 'jgdavey/vim-turbux'
 
+call vundle#end()
+filetype plugin indent on 
+let g:rainbow_active = 1
 
-Bundle 'tpope/vim-rails.git'
-Bundle 'stephpy/vim-yaml'
-Bundle 'vim-ruby/vim-ruby'
 syntax on
+
+set undofile
+set undodir=$HOME/.vim/undo
+set undolevels=1000
+set undoreload=10000
+
+set hlsearch
 set ignorecase
 set smartcase
 set incsearch
