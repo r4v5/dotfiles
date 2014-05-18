@@ -95,6 +95,14 @@ function chpwd {
 
 bindkey -e
 
+# ITYOOL 2014 I still need to define this
+bindkey "^?" backward-delete-char
+bindkey "^[[3~" delete-char
+bindkey '^[[7~' beginning-of-line
+bindkey '^[[8~' end-of-line
+bindkey '^[[5~' beginning-of-buffer-or-history
+bindkey '^[[6~' end-of-buffer-or-history
+
 setopt nonomatch
 setopt nohup
 
