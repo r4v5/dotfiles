@@ -5,36 +5,27 @@
 autoload colors zsh/terminfo
 colors
 
-# get a basic idea for options for files and shit
-case `uname` in 
-	[Ll]inux)
-		THISUNAME=linux
-		;;
-	[Cc][Yy][Gg][Ww][Ii][Nn]*)
-		THISUNAME=cygwin
-		;;
-	*[Bb][Ss][Dd])
-		THISUNAME=bsd
-		;;
-esac
-
+[ -z $HOSTNAME ] && HOSTNAME=`hostname -s`
 # prompt colors, whut!
 case $HOSTNAME in
-    lenin)
-	HOSTCOLOR=green
-	;;
-    cubieboard)
-	HOSTCOLOR=magenta
-	;;
-    udoo)
-	HOSTCOLOR=white
-	;;
-    hippocampus)
-	HOSTCOLOR=blue
-	;;
-    linuxvm*)
-	HOSTCOLOR=yellow
-	;;
+  lenin)
+	  HOSTCOLOR=green
+	  ;;
+  cubieboard)
+	  HOSTCOLOR=magenta
+	  ;;
+  udoo)
+	  HOSTCOLOR=white
+	  ;;
+  hippocampus)
+	  HOSTCOLOR=cyan
+	  ;;
+  linuxvm*)
+	  HOSTCOLOR=yellow
+    ;;
+  *)
+    HOSTCOLOR=yellow
+    ;;
 esac
 
 [[ $LOGNAME == "root" ]] && HOSTCOLOR=red
@@ -43,7 +34,7 @@ PS1="%{$fg_bold[$HOSTCOLOR]%}%h%(?..(%?%)) %m %{$fg_bold[blue]%}%1d %#%b%o %{$te
 RPS1=%B%(1j.%j|.)%t%b
 precmd () {
 case $TERM in
-	screen*|xterm*|rxvt*)
+	screen*|xterm*|tmux*)
 		print -Pn "]0;%n@%m:%~ "
 	;;
 	*)
@@ -52,7 +43,7 @@ esac
 }
 
 # Keychain goodies
-[ -f $(which keychain) ] && [ -f $HOME/.ssh/id_dsa ] && keychain -q $HOME/.ssh/id_dsa
+#[ -f $(which keychain) ] && keychain -q $HOME/.ssh/id_dsa
 [ -f ${HOME}/.keychain/${HOSTNAME}-sh ] && source $HOME/.keychain/${HOSTNAME}-sh
 
 # if we've got lesspipe, it sure is nice to have
@@ -81,24 +72,16 @@ alias mkdir='nocorrect mkdir'	# no spelling correction on mkdir
 [[ -f $(which vim) ]] && alias vi='vim'
 
 alias pks='source ~/.zshrc'     # make .zshrc into function instantly
-alias xmm='xmodmap ~/.Xmodmap'
 alias sl=ls
 
 # LS Options.
-[[ $THISUNAME == "linux" ]] || [[ $THISUNAME == "cygwin" ]] && alias ls="ls --color -F -b -h"
-[[ $THISUNAME == "bsd" ]] && alias ls="ls -F"
+alias ls="ls --color -F -b -h"
+ alias ls="ls -F"
 
 function ir { ps aux | grep $1 | grep -v grep }
 function killit { killall -9 $1 }
 function tz { tar -xzvf "$1" }
 function bz { tar -xjvf $1 }
-
-# Usage: pskill <application/program name>
-pskill()
-{ 
-	kill -9 $(ps aux | grep $1 | grep -v grep | awk '{ print $1 }')
-		echo -n "Killed $1 process..."
-		}
 
 # AUTOMATIC ls on chpwd *if* directly isn't too big.
 function chpwd {
@@ -106,47 +89,14 @@ function chpwd {
 	if [ $ls_lines -eq 0 ]; then
 	elif [ $ls_lines -le 18 ]; then
 		ls
-		echo "\e[1;32m --[ Items: `ls | wc -l` \e[1;32m]--"
+		echo "\e[1;32m} --[ Items: `ls | wc -l` \e[1;32m]--"
 	fi
 	}
 
 bindkey -e
 
-# I really need to set up paths in here somehow in a hostname-dependent way. Oh well.
-# also what doesn't a Sun have?
-PATH=/bin:/usr/local/bin::/usr/bin::/sbin:/usr/sbin:/usr/local/sbin
-case $HOSTNAME in
-	catenoid)
-		PATH=$PATH:/home/r4v5/bin
-		;;
-	McChoxy)
-		PATH=$PATH:/home/r4v5/bin
-		*)
-		;;
-esac
-
-# binds for ctrl- and ctrl-alt-arrows
-case $TERM in
-	xterm*|rxvt*|mlterm|aterm|screen)
-		bindkey 'Od' backward-word
-		bindkey '^[Oc' forward-word
-	;;
-	*)
-	;;
-esac
-
-
-# set up the control sextet
-bindkey '[3~' delete-char
-bindkey '[7~' beginning-of-line
-bindkey '[8~' end-of-line
-bindkey '[5~' beginning-of-buffer-or-history
-bindkey '[6~' end-of-buffer-or-history
-
 setopt nonomatch
 setopt nohup
-
-
 
 zstyle -e ':completion:*:ssh:*' hosts \
 	'reply=($(sed -e "/^#/d" -e "s/ .*\$//" -e "s/,/ /g" \
@@ -158,7 +108,7 @@ zstyle -e ':completion:*:scp:*' hosts \
 		
 # Functions for displaying good stuff in a terminal title
 case $TERM in
-	xterm*|screen*|rxvt|(K|a)term)
+	xterm*|screen*|tmux*)
 	precmd () {
 		print -Pn "\033]0;%n@%m%#  %~ %l  %w :: %T\a" 
 	}
@@ -172,7 +122,7 @@ esac
 
 # This is a lot of disk usage and time when you spawn a term in order to
 # tab-complete man pages. Whether this is worthwhile is up to you.
-[[ $HOSTNAME == "helicoid" ]] || [[ $HOSTNAME == "[st]u[nx]*" ]] && {
+[[ $HOSTNAME != "cubieboard" ]] || [[ $HOSTNAME != "udoo" ]] && {
 
 compctl -f -x 'S[1][2][3][4][5][6][7][8][9]' -k '(1 2 3 4 5 6 7 8 9)' \
   - 'R[[1-9nlo]|[1-9](|[a-z]),^*]' -K 'match-man' \
@@ -197,7 +147,8 @@ autoload -Uz compinit
 compinit
 # End of lines added by compinstall
 
-TZ="/usr/share/zoneinfo/US/Central"
-export TZ
 ## Friggin' TRAMP
 [ $TERM = "dumb" ] && unsetopt zle && PS1='$ '
+
+TZ="/usr/share/zoneinfo/US/Central"
+export TZ
