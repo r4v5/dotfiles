@@ -3,7 +3,9 @@
 
 # i like color
 autoload colors zsh/terminfo
+autoload -Uz vcs_info
 colors
+setopt promptsubst
 
 [ -z $HOSTNAME ] && HOSTNAME=`hostname -s`
 # prompt colors, whut!
@@ -30,15 +32,24 @@ esac
 
 [[ $LOGNAME == "root" ]] && HOSTCOLOR=red
 
+zstyle ':vcs_info:*' formats '%F{5}[%F{2}%b%F{5}]%f'
+
+vcs_info_wrapper() {
+  vcs_info
+  if [ -n "$vcs_info_msg_0_" ]; then
+      echo "%{$fg[grey]%}${vcs_info_msg_0_}%{$reset_color%}$del"
+  fi
+}
+
 PS1="%{$fg_bold[$HOSTCOLOR]%}%h%(?..(%?%)) %m %{$fg_bold[blue]%}%1d %#%b%o %{$terminfo[sgr0]%}"
-RPS1=%B%(1j.%j|.)%t%b
+RPS1=%B%(1j.%j|.)$'$(vcs_info_wrapper)'%t%b
 precmd () {
-case $TERM in
-	screen*|xterm*|tmux*)
-		print -Pn "]0;%n@%m:%~ "
-	;;
-	*)
-	;;
+  case $TERM in
+	  screen*|xterm*|tmux*)
+      print -Pn "]0;%n@%m:%~ "
+	  ;;
+	  *)
+	  ;;
 esac
 }
 

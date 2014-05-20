@@ -14,6 +14,9 @@ set undodir=$HOME/.vim/undo
 set undolevels=1000
 set undoreload=10000
 
+set mouse=a
+
+
 set hlsearch
 set ignorecase
 set smartcase
