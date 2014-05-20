@@ -168,6 +168,6 @@ compinit
 
 ## Friggin' TRAMP
 [ $TERM = "dumb" ] && unsetopt zle && PS1='$ '
-
+[ -f `which pyenv` ] && eval "$(pyenv init -)" 
 TZ="/usr/share/zoneinfo/US/Central"
 export TZ
