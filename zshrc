@@ -54,8 +54,8 @@ esac
 }
 
 # Keychain goodies
-#[ -f $(which keychain) ] && keychain -q $HOME/.ssh/id_dsa
-[ -f ${HOME}/.keychain/${HOSTNAME}-sh ] && source $HOME/.keychain/${HOSTNAME}-sh
+[ -f "$(which keychain)" ] && keychain -q $HOME/.ssh/*_[dr]sa
+[ -f "${HOME}/.keychain/`hostname`-sh" ] && source $HOME/.keychain/`hostname`-sh
 
 # if we've got lesspipe, it sure is nice to have
 [[ -f lesspipe.sh ]] && export LESSOPEN="|lesspipe.sh %s"
@@ -165,6 +165,18 @@ zstyle :compinstall filename '/home/r4v5/.zshrc'
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+if [ $HOSTNAME == "mdonahue" ]
+then
+export DYLD_LIBRARY_PATH="/Applications/Oracle"
+export SQLPATH="/Applications/Oracle"
+export TNS_ADMIN="/Applications/Oracle"
+export NLS_LANG="AMERICAN_AMERICA.UTF8"
+export PATH=$PATH:$DYLD_LIBRARY_PATH
+export RC_ARCHS=i386
+export INSTANT_CLIENT_DIRECTORY="/Applications/Oracle"
+fi
 
 ## Friggin' TRAMP
 [ $TERM = "dumb" ] && unsetopt zle && PS1='$ '
