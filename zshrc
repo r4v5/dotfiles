@@ -137,6 +137,15 @@ case $TERM in
 	;;
 esac
 
+# Pyenv stuffs
+
+export PYENV_ROOT="${HOME}/.pyenv"
+if [ -d "${PYENV_ROOT}" ]; then
+  export PATH="${PYENV_ROOT}/bin:${PATH}"
+  eval "$(pyenv init -)"
+fi
+
+
 # The following lines were added by compinstall
 
 # This is a lot of disk usage and time when you spawn a term in order to
