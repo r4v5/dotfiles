@@ -10,7 +10,6 @@ Plugin 'vim-ruby/vim-ruby'
 Plugin 'oblitum/rainbow'
 Plugin 'The-NERD-Commenter'
 Plugin 'vimux'
-"Plugin 'jgdavey/vim-turbux'
-
+Plugin 'scrooloose/nerdtree'
 call vundle#end()
 filetype plugin indent on 

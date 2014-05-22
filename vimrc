@@ -6,6 +6,9 @@ if filereadable(expand("~/.vimrc.bundles"))
 endif
 
 let g:rainbow_active = 1
+autocmd vimenter * if !argc() | NERDTree | endif
+map <C-n> :NERDTreeToggle<CR>
+
 
 syntax on
 
