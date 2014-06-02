@@ -13,8 +13,8 @@ case $HOSTNAME in
   lenin)
 	  HOSTCOLOR=green
 	  ;;
-  cubieboard)
-	  HOSTCOLOR=magenta
+  cubie*)
+	  HOSTCOLOR=grey
 	  ;;
   udoo)
 	  HOSTCOLOR=white
@@ -22,8 +22,8 @@ case $HOSTNAME in
   hippocampus)
 	  HOSTCOLOR=cyan
 	  ;;
-  linuxvm*)
-	  HOSTCOLOR=yellow
+  cortex*)
+	  HOSTCOLOR=magenta
     ;;
   *)
     HOSTCOLOR=yellow
