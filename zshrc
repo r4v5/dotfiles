@@ -185,8 +185,11 @@ export RC_ARCHS=i386
 export INSTANT_CLIENT_DIRECTORY="/Applications/Oracle"
 fi
 
+#this exists solely to clean up after failed resques
+alias workerkill='ps -ef | grep "resque\|god\|server.pid" | grep -v grep | awk '"'"'{print $2}'"'"' | xargs kill -9'
+
 ## Friggin' TRAMP
 [ $TERM = "dumb" ] && unsetopt zle && PS1='$ '
 [ -f "`which pyenv`" ] && eval "$(pyenv init -)" 
-TZ="/usr/share/zoneinfo/US/Central"
+TZ="US/Central"
 export TZ
