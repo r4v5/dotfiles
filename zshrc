@@ -73,7 +73,7 @@ alias -g H='|head'
 alias -g N='&>/dev/null&'
 
 [[ -f $(which screen) ]] && alias sc='screen -Ux'
-[[ -f $(which tmux) ]] && alias sc='tmux -CC attach'
+[[ -f $(which tmux) ]] && alias sc='tmux attach'
 alias psaux='ps -aux G'
 alias cl='clear'
 alias cls=cl
