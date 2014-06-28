@@ -190,6 +190,5 @@ alias workerkill='ps -ef | grep "resque\|god\|server.pid" | grep -v grep | awk '
 
 ## Friggin' TRAMP
 [ $TERM = "dumb" ] && unsetopt zle && PS1='$ '
-[ -f "`which pyenv`" ] && eval "$(pyenv init -)" 
 TZ="US/Central"
 export TZ
