@@ -174,6 +174,8 @@ compinit
 # End of lines added by compinstall
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+[[ -f "$HOME/.rake_completion.zsh" ]] && source $HOME/.rake_completion.zsh
+
 if [ $HOSTNAME == "mdonahue" ]
 then
 export DYLD_LIBRARY_PATH="/Applications/Oracle"
