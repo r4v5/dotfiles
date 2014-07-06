@@ -73,7 +73,7 @@ alias -g H='|head'
 alias -g N='&>/dev/null&'
 
 [[ -f $(which screen) ]] && alias sc='screen -Ux'
-[[ -f $(which tmux) ]] && alias sc='tmux -CC attach'
+[[ -f $(which tmux) ]] && alias sc='tmux attach'
 alias psaux='ps -aux G'
 alias cl='clear'
 alias cls=cl
@@ -192,6 +192,5 @@ alias workerkill='ps -ef | grep "resque\|god\|server.pid" | grep -v grep | awk '
 
 ## Friggin' TRAMP
 [ $TERM = "dumb" ] && unsetopt zle && PS1='$ '
-[ -f "`which pyenv`" ] && eval "$(pyenv init -)" 
 TZ="US/Central"
 export TZ
