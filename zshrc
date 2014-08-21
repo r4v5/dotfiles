@@ -187,6 +187,9 @@ export RC_ARCHS=i386
 export INSTANT_CLIENT_DIRECTORY="/Applications/Oracle"
 fi
 
+# GNURadio/PyBOMBS initiation
+[[ -f "$HOME/code/target/setup_env.sh" ]] && source "$HOME/code/target/setup_env.sh"
+
 #this exists solely to clean up after failed resques
 alias workerkill='ps -ef | grep "resque\|god\|server.pid" | grep -v grep | awk '"'"'{print $2}'"'"' | xargs kill -9'
 
