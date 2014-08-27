@@ -139,12 +139,14 @@ esac
 
 # Pyenv stuffs
 
-export PYENV_ROOT="${HOME}/.pyenv"
+[ -d "${HOME}/.pyenv" ] && export PYENV_ROOT="${HOME}/.pyenv"
 if [ -d "${PYENV_ROOT}" ]; then
   export PATH="${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:${PATH}"
   eval "$(pyenv init -)"
 fi
 
+# golang
+[ -d /usr/local/opt/go/libexec/bin ] && export PATH=$PATH:/usr/local/opt/go/libexec/bin
 
 # The following lines were added by compinstall
 
