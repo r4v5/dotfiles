@@ -6,6 +6,7 @@ autoload colors zsh/terminfo
 autoload -Uz vcs_info
 colors
 setopt promptsubst
+[ -d /usr/local/share/zsh-completions ] && fpath=(/usr/local/share/zsh-completions $fpath)
 
 [ -z $HOSTNAME ] && HOSTNAME=`hostname -s`
 # prompt colors, whut!
@@ -81,7 +82,7 @@ alias mv='nocorrect mv -i'      # no spelling correction on mv
 [[ -f $(which rsync) ]] && alias cp='rsync --progress'
 alias mkdir='nocorrect mkdir'	# no spelling correction on mkdir
 [[ -f $(which vim) ]] && alias vi='vim'
-
+[[ -f $(which mvim) ]] && alias vim='mvim -v'
 alias pks='source ~/.zshrc'     # make .zshrc into function instantly
 alias sl=ls
 

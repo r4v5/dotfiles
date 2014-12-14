@@ -14,6 +14,8 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\v\.(jpg|gif|pyc|swp|pid|scssc)$',
   \ }
 
+au BufRead,BufNewFile *.md set filetype=markdown
+
 map <C-n> :NERDTreeToggle<CR>
 map <Leader>t :CtrlP<CR>
 map <Leader>b :CtrlPBuffer<CR>
