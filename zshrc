@@ -200,3 +200,4 @@ alias workerkill='ps -ef | grep "resque\|god\|server.pid" | grep -v grep | awk '
 [ $TERM = "dumb" ] && unsetopt zle && PS1='$ '
 TZ="US/Central"
 export TZ
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi

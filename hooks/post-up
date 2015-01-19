@@ -4,7 +4,5 @@ if [ ! -e $HOME/.vim/bundle/Vundle.vim ]; then
   git clone https://github.com/gmarik/vundle.git $VUNDLEDIR 
 fi
   vim -u $HOME/.vimrc.bundles +PluginInstall +qa
-  [ -f $HOME/.vim/bundle/youcompleteme/install.sh ] && cd $HOME/.vim/bundle/youcompleteme && git submodule update --init --recursive &&  ~/.vim/bundle/youcompleteme/install.sh
-
   [ ! -e $HOME/.tmux/plugins/tpm ] && git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
