@@ -6,7 +6,9 @@
  '(ansi-color-names-vector
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
  '(custom-enabled-themes (quote (wheatgrass)))
+ '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
+ '(standard-indent 2)
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
