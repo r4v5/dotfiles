@@ -44,15 +44,6 @@ vcs_info_wrapper() {
 
 PS1="%{$fg_bold[$HOSTCOLOR]%}%h%(?..(%?%)) %m %{$fg_bold[blue]%}%1d %#%b%o %{$terminfo[sgr0]%}"
 RPS1=%B%(1j.%j|.)$'$(vcs_info_wrapper)'%t%b
-precmd () {
-  case $TERM in
-	  screen*|xterm*|tmux*)
-      print -Pn "]0;%n@%m:%~ "
-	  ;;
-	  *)
-	  ;;
-esac
-}
 
 # Keychain goodies
 [ -f "$(which keychain)" ] && keychain -q $HOME/.ssh/*_[dr]sa
