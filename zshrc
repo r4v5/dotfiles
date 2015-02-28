@@ -73,7 +73,7 @@ alias mv='nocorrect mv -i'      # no spelling correction on mv
 [[ -f $(which rsync) ]] && alias cp='rsync --progress'
 alias mkdir='nocorrect mkdir'	# no spelling correction on mkdir
 [[ -f $(which vim) ]] && alias vi='vim'
-[[ -f $(which mvim) ]] && alias vim='mvim -v'
+[[ -f $(which mvim 2>/dev/null) ]] && alias vim='mvim -v'
 alias pks='source ~/.zshrc'     # make .zshrc into function instantly
 alias sl=ls
 
@@ -167,6 +167,7 @@ autoload -Uz compinit
 compinit
 # End of lines added by compinstall
 
+[[ -f  $(which rbenv 2>/dev/null) ]] && eval "$(rbenv init -)"
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 [[ -f "$HOME/.rake_completion.zsh" ]] && source $HOME/.rake_completion.zsh
 
@@ -191,4 +192,3 @@ alias workerkill='ps -ef | grep "resque\|god\|server.pid" | grep -v grep | awk '
 [ $TERM = "dumb" ] && unsetopt zle && PS1='$ '
 TZ="US/Central"
 export TZ
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
