@@ -23,6 +23,9 @@ case $HOSTNAME in
   hippocampus)
 	  HOSTCOLOR=cyan
 	  ;;
+  lampshade)
+    HOSTCOLOR=green
+    ;;
   cortex*)
 	  HOSTCOLOR=magenta
     ;;
