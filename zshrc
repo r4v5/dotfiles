@@ -171,6 +171,8 @@ compinit
 # End of lines added by compinstall
 
 [[ -f  $(which rbenv 2>/dev/null) ]] && eval "$(rbenv init -)"
+[[ -d "$HOME/bin" ]] && export PATH=$HOME/bin:$PATH
+
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 [[ -f "$HOME/.rake_completion.zsh" ]] && source $HOME/.rake_completion.zsh
 
