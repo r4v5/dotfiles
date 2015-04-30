@@ -8,7 +8,7 @@ colors
 setopt promptsubst
 [ -d /usr/local/share/zsh-completions ] && fpath=(/usr/local/share/zsh-completions $fpath)
 
-[ -z $HOSTNAME ] && HOSTNAME=`hostname -s`
+[ -z "$HOSTNAME" ] && HOSTNAME=$(hostname -s)
 # prompt colors, whut!
 case $HOSTNAME in
   lenin)
