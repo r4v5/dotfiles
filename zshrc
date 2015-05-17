@@ -95,7 +95,7 @@ function chpwd {
 	if [ $ls_lines -eq 0 ]; then
 	elif [ $ls_lines -le 18 ]; then
 		ls
-		echo "\e[1;32m} --[ Items: `ls | wc -l` \e[1;32m]--"
+		echo "$fg[green] --[ Items: `ls | wc -l` ] --$reset_color"
 	fi
 	}
 
