@@ -8,6 +8,8 @@ colors
 setopt promptsubst
 [ -d /usr/local/share/zsh-completions ] && fpath=(/usr/local/share/zsh-completions $fpath)
 
+typeset -U path
+
 [ -z "$HOSTNAME" ] && HOSTNAME=$(hostname -s)
 # prompt colors, whut!
 case $HOSTNAME in
@@ -132,17 +134,6 @@ case $TERM in
 	;;
 esac
 
-# Pyenv stuffs
-
-[ -d "${HOME}/.pyenv" ] && export PYENV_ROOT="${HOME}/.pyenv"
-if [ -d "${PYENV_ROOT}" ]; then
-  export PATH="${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:${PATH}"
-  eval "$(pyenv init -)"
-fi
-
-# golang
-[ -d /usr/local/opt/go/libexec/bin ] && export PATH=$PATH:/usr/local/opt/go/libexec/bin
-
 # The following lines were added by compinstall
 
 # This is a lot of disk usage and time when you spawn a term in order to
@@ -171,7 +162,18 @@ compinit
 # End of lines added by compinstall
 
 [[ -f  $(which rbenv 2>/dev/null) ]] && eval "$(rbenv init -)"
-[[ -d "$HOME/bin" ]] && export PATH=$HOME/bin:$PATH
+[[ -d "$HOME/bin" ]] && path=($HOME/bin "$path[@]")
+
+# Pyenv stuffs
+
+#[ -d "${HOME}/.pyenv" ] && export PYENV_ROOT="${HOME}/.pyenv"
+#if [ -d "${PYENV_ROOT}" ]; then
+#  eval "$(pyenv init -)"
+#fi
+
+# golang
+[ -d /usr/local/opt/go/libexec/bin ] && path+=/usr/local/opt/go/libexec/bin
+
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 [[ -f "$HOME/.rake_completion.zsh" ]] && source $HOME/.rake_completion.zsh
@@ -182,7 +184,7 @@ export DYLD_LIBRARY_PATH="/Applications/Oracle"
 export SQLPATH="/Applications/Oracle"
 export TNS_ADMIN="/Applications/Oracle"
 export NLS_LANG="AMERICAN_AMERICA.UTF8"
-export PATH=$PATH:$DYLD_LIBRARY_PATH
+path+=$DYLD_LIBRARY_PATH
 export RC_ARCHS=i386
 export INSTANT_CLIENT_DIRECTORY="/Applications/Oracle"
 fi
