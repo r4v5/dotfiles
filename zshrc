@@ -189,6 +189,16 @@ export RC_ARCHS=i386
 export INSTANT_CLIENT_DIRECTORY="/Applications/Oracle"
 fi
 
+# Command line volume control
+case `uname` in
+  "Darwin")
+    alias mute="osascript -e 'set volume output muted true'"
+    ;;
+  "Linux")
+    # lol sound on linux
+    ;;
+esac
+
 # GNURadio/PyBOMBS initiation
 [[ -f "$HOME/code/target/setup_env.sh" ]] && source "$HOME/code/target/setup_env.sh"
 
