@@ -13,23 +13,23 @@ typeset -U path
 [ -z "$HOSTNAME" ] && HOSTNAME=$(hostname -s)
 # prompt colors, whut!
 case $HOSTNAME in
-  lenin)
-	  HOSTCOLOR=green
-	  ;;
-  cubie*)
-	  HOSTCOLOR=grey
-	  ;;
-  udoo)
-	  HOSTCOLOR=white
-	  ;;
-  hippocampus)
-	  HOSTCOLOR=cyan
-	  ;;
-  lampshade)
+  mdonahue*)
     HOSTCOLOR=green
     ;;
+  cubie*)
+    HOSTCOLOR=grey
+    ;;
+  udoo)
+    HOSTCOLOR=white
+    ;;
+  hippocampus)
+    HOSTCOLOR=cyan
+    ;;
+  do*)
+    HOSTCOLOR=blue
+    ;;
   cortex*)
-	  HOSTCOLOR=magenta
+    HOSTCOLOR=magenta
     ;;
   *)
     HOSTCOLOR=yellow
@@ -43,7 +43,7 @@ zstyle ':vcs_info:*' formats '%F{5}[%F{2}%b%F{5}]%f'
 vcs_info_wrapper() {
   vcs_info
   if [ -n "$vcs_info_msg_0_" ]; then
-      echo "%{$fg[grey]%}${vcs_info_msg_0_}%{$reset_color%}$del"
+    echo "%{$fg[grey]%}${vcs_info_msg_0_}%{$reset_color%}$del"
   fi
 }
 
@@ -84,7 +84,7 @@ alias sl=ls
 
 # LS Options.
 alias ls="ls --color -F -b -h"
- alias ls="ls -F"
+alias ls="ls -F"
 
 function ir { ps aux | grep $1 | grep -v grep }
 function killit { killall -9 $1 }
@@ -93,13 +93,13 @@ function bz { tar -xjvf $1 }
 
 # AUTOMATIC ls on chpwd *if* directly isn't too big.
 function chpwd {
-	integer ls_lines="$(ls -C | wc -l)"
-	if [ $ls_lines -eq 0 ]; then
-	elif [ $ls_lines -le 18 ]; then
-		ls
-		echo "$fg[green] --[ Items: `ls | wc -l` ] --$reset_color"
-	fi
-	}
+  integer ls_lines="$(ls -C | wc -l)"
+  if [ $ls_lines -eq 0 ]; then
+  elif [ $ls_lines -le 18 ]; then
+    ls
+    echo "$fg[green] --[ Items: `ls | wc -l` ] --$reset_color"
+  fi
+}
 
 bindkey -e
 
@@ -115,23 +115,25 @@ setopt nonomatch
 setopt nohup
 
 zstyle -e ':completion:*:ssh:*' hosts \
-	'reply=($(sed -e "/^#/d" -e "s/ .*\$//" -e "s/,/ /g" \
-			~/.ssh/known_hosts 2>/dev/null))'
+  'reply=($(sed -e "/^#/d" -e "s/ .*\$//" -e "s/,/ /g" \
+  ~/.ssh/known_hosts 2>/dev/null))'
 zstyle -e ':completion:*:scp:*' hosts \
-        'reply=($(sed -e "/^#/d" -e "s/ .*\$//" -e "s/,/ /g" \
-	                        ~/.ssh/known_hosts 2>/dev/null))'
+  'reply=($(sed -e "/^#/d" -e "s/ .*\$//" -e "s/,/ /g" \
+  ~/.ssh/known_hosts 2>/dev/null))'
 
-		
+
 # Functions for displaying good stuff in a terminal title
 case $TERM in
-	xterm*|screen*|tmux*)
-	precmd () {
-		print -Pn "\033]0;%n@%m%#  %~ %l  %w :: %T\a" 
-	}
-	preexec () {
-		print -Pn "\033]0;%n@%m%#  <$1>  %~ %l  %w :: %T\a" 
-	}
-	;;
+  xterm*|screen*|tmux*)
+    precmd () {
+      print -Pn "\033]0;%n@%m%#  %~ %l  %w :: %T\a"
+      printf "\033kzsh\033\\"
+    }
+    preexec () {
+      print -Pn "\033]0;%n@%m%#  <$1>  %~ %l  %w :: %T\a"
+      printf "\033k$(echo "$1" | cut -d" " -f1)\033\\"
+    }
+    ;;
 esac
 
 # The following lines were added by compinstall
@@ -180,13 +182,13 @@ compinit
 
 if [ $HOSTNAME == "mdonahue" ]
 then
-export DYLD_LIBRARY_PATH="/Applications/Oracle"
-export SQLPATH="/Applications/Oracle"
-export TNS_ADMIN="/Applications/Oracle"
-export NLS_LANG="AMERICAN_AMERICA.UTF8"
-path+=$DYLD_LIBRARY_PATH
-export RC_ARCHS=i386
-export INSTANT_CLIENT_DIRECTORY="/Applications/Oracle"
+  export DYLD_LIBRARY_PATH="/Applications/Oracle"
+  export SQLPATH="/Applications/Oracle"
+  export TNS_ADMIN="/Applications/Oracle"
+  export NLS_LANG="AMERICAN_AMERICA.UTF8"
+  path+=$DYLD_LIBRARY_PATH
+  export RC_ARCHS=i386
+  export INSTANT_CLIENT_DIRECTORY="/Applications/Oracle"
 fi
 
 # Command line volume control
