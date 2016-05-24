@@ -26,7 +26,7 @@ case $HOSTNAME in
     HOSTCOLOR=cyan
     ;;
   do*)
-    HOSTCOLOR=blue
+    HOSTCOLOR=white
     ;;
   cortex*)
     HOSTCOLOR=magenta
@@ -51,7 +51,7 @@ PS1="%{$fg_bold[$HOSTCOLOR]%}%h%(?..(%?%)) %m %{$fg_bold[blue]%}%1d %#%b%o %{$te
 RPS1=%B%(1j.%j|.)$'$(vcs_info_wrapper)'%t%b
 
 # Keychain goodies
-[ -f "$(which keychain)" ] && keychain -q $HOME/.ssh/*_[dr]sa
+[ -f "$(which keychain 2>/dev/null)" ] && keychain -q $HOME/.ssh/*_[dr]sa
 [ -f "${HOME}/.keychain/`hostname`-sh" ] && source $HOME/.keychain/`hostname`-sh
 
 # if we've got lesspipe, it sure is nice to have
@@ -69,8 +69,8 @@ alias -g T='|tail'
 alias -g H='|head'
 alias -g N='&>/dev/null&'
 
-[[ -f $(which screen) ]] && alias sc='screen -Ux'
-[[ -f $(which tmux) ]] && alias sc='tmux attach'
+[[ -f $(which screen 2>/dev/null) ]] && alias sc='screen -Ux'
+[[ -f $(which tmux 2>/dev/null) ]] && alias sc='tmux attach'
 alias psaux='ps -aux G'
 alias cl='clear'
 alias cls=cl

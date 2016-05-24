@@ -15,7 +15,9 @@ set undodir=$HOME/.vim/undo
 set undolevels=1000
 set undoreload=10000
 
-set mouse=a
+if has('mouse')
+  set mouse=a
+endif
 
 
 set hlsearch
