@@ -26,7 +26,7 @@ case $HOSTNAME in
     HOSTCOLOR=cyan
     ;;
   do*)
-    HOSTCOLOR=white
+    HOSTCOLOR=green
     ;;
   cortex*)
     HOSTCOLOR=magenta
@@ -124,7 +124,7 @@ zstyle -e ':completion:*:scp:*' hosts \
 
 # Functions for displaying good stuff in a terminal title
 case $TERM in
-  xterm*|screen*|tmux*)
+  screen*|tmux*)
     precmd () {
       print -Pn "\033]0;%n@%m%#  %~ %l  %w :: %T\a"
       printf "\033kzsh\033\\"
