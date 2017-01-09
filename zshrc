@@ -19,7 +19,7 @@ case $HOSTNAME in
   cubie*)
     HOSTCOLOR=grey
     ;;
-  udoo)
+  ganglia)
     HOSTCOLOR=white
     ;;
   hippocampus)
@@ -133,7 +133,15 @@ case $TERM in
       print -Pn "\033]0;%n@%m%#  <$1>  %~ %l  %w :: %T\a"
       printf "\033k$(echo "$1" | cut -d" " -f1)\033\\"
     }
-    ;;
+  ;;
+  xterm*)
+    precmd () {
+      print -Pn "\033]0;%n@%m%#  %~ %l  %w :: %T\a"
+    }
+    preexec () {
+      print -Pn "\033]0;%n@%m%#  <$1>  %~ %l  %w :: %T\a"
+    }
+  ;;
 esac
 
 # The following lines were added by compinstall
