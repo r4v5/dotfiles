@@ -14,7 +14,7 @@ set undofile
 set undodir=$HOME/.vim/undo
 set undolevels=1000
 set undoreload=10000
-
+set bg=dark
 if has('mouse')
   set mouse=a
 endif

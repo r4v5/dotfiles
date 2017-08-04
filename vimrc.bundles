@@ -3,6 +3,7 @@ filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
+Plugin 'altercation/vim-colors-solarized'
 Plugin 'rodjek/vim-puppet'
 Plugin 'tpope/vim-rails.git'
 Plugin 'stephpy/vim-yaml'
@@ -18,6 +19,9 @@ Plugin 'scrooloose/nerdtree'
 call vundle#end()
 filetype plugin indent on
 
+" solarized
+let g:solarized_termcolors=256
+colorscheme solarized
 " nerdtree
 map <C-n> :NERDTreeToggle<CR>
 
