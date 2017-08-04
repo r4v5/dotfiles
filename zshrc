@@ -175,11 +175,7 @@ compinit
 [[ -d "$HOME/bin" ]] && path=($HOME/bin "$path[@]")
 
 # Pyenv stuffs
-
-#[ -d "${HOME}/.pyenv" ] && export PYENV_ROOT="${HOME}/.pyenv"
-#if [ -d "${PYENV_ROOT}" ]; then
-#  eval "$(pyenv init -)"
-#fi
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
 # golang
 [ -d /usr/local/opt/go/libexec/bin ] && path+=/usr/local/opt/go/libexec/bin
@@ -214,8 +210,10 @@ esac
 
 #this exists solely to clean up after failed resques
 alias workerkill='ps -ef | grep "resque\|god\|server.pid" | grep -v grep | awk '"'"'{print $2}'"'"' | xargs kill -9'
-
+export EDITOR=vim
 ## Friggin' TRAMP
 [ $TERM = "dumb" ] && unsetopt zle && PS1='$ '
 TZ="US/Central"
 export TZ
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
