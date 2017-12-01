@@ -13,7 +13,7 @@ typeset -U path
 [ -z "$HOSTNAME" ] && HOSTNAME=$(hostname -s)
 # prompt colors, whut!
 case $HOSTNAME in
-  mdonahue*)
+  Mason*)
     HOSTCOLOR=green
     ;;
   cubie*)
@@ -84,14 +84,12 @@ alias sl=ls
 
 # LS Options.
 alias ls="ls --color -F -b -h"
-alias ls="ls -F"
 
 function ir { ps aux | grep $1 | grep -v grep }
-function killit { killall -9 $1 }
 function tz { tar -xzvf "$1" }
 function bz { tar -xjvf $1 }
 
-# AUTOMATIC ls on chpwd *if* directly isn't too big.
+# AUTOMATIC ls on chpwd *if* directory isn't too big.
 function chpwd {
   integer ls_lines="$(ls -C | wc -l)"
   if [ $ls_lines -eq 0 ]; then
@@ -131,7 +129,7 @@ case $TERM in
     }
     preexec () {
       print -Pn "\033]0;%n@%m%#  <$1>  %~ %l  %w :: %T\a"
-      printf "\033k$(echo "$1" | cut -d" " -f1)\033\\"
+      printf "\033k$(echo "$1")\033\\"
     }
   ;;
   xterm*)
@@ -146,20 +144,6 @@ esac
 
 # The following lines were added by compinstall
 
-# This is a lot of disk usage and time when you spawn a term in order to
-# tab-complete man pages. Whether this is worthwhile is up to you.
-[[ $HOSTNAME != "cubieboard" ]] || [[ $HOSTNAME != "udoo" ]] && {
-
-compctl -f -x 'S[1][2][3][4][5][6][7][8][9]' -k '(1 2 3 4 5 6 7 8 9)' \
-  - 'R[[1-9nlo]|[1-9](|[a-z]),^*]' -K 'match-man' \
-  - 's[-M],c[-1,-M]' -g '*(-/)' \
-  - 's[-P],c[-1,-P]' -c \
-  - 's[-S],s[-1,-S]' -k '( )' \
-  - 's[-]' -k '(a d f h k t M P)' \
-  - 'p[1,-1]' -c + -K 'match-man' \
-  -- man
-}	      
-
 zstyle ':completion:*' completer _list _complete _approximate
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=** r:|=**'
@@ -170,30 +154,19 @@ zstyle :compinstall filename '/home/r4v5/.zshrc'
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
-
-[[ -f  $(which rbenv 2>/dev/null) ]] && eval "$(rbenv init -)"
 [[ -d "$HOME/bin" ]] && path=($HOME/bin "$path[@]")
 
+[[ -d "$HOME/.rbenv/bin" ]] && path=($HOME/.rbenv/bin "$path[@]")
+[[ -f  $(which rbenv 2>/dev/null) ]] && eval "$(rbenv init -)"
+
 # Pyenv stuffs
-if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+[[ -e $(which pyenv 2> /dev/null) ]] && eval "$(pyenv init -)"
 
 # golang
 [ -d /usr/local/opt/go/libexec/bin ] && path+=/usr/local/opt/go/libexec/bin
 
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 [[ -f "$HOME/.rake_completion.zsh" ]] && source $HOME/.rake_completion.zsh
-
-if [ $HOSTNAME == "mdonahue" ]
-then
-  export DYLD_LIBRARY_PATH="/Applications/Oracle"
-  export SQLPATH="/Applications/Oracle"
-  export TNS_ADMIN="/Applications/Oracle"
-  export NLS_LANG="AMERICAN_AMERICA.UTF8"
-  path+=$DYLD_LIBRARY_PATH
-  export RC_ARCHS=i386
-  export INSTANT_CLIENT_DIRECTORY="/Applications/Oracle"
-fi
 
 # Command line volume control
 case `uname` in
@@ -201,6 +174,7 @@ case `uname` in
     alias mute="osascript -e 'set volume output muted true'"
     ;;
   "Linux")
+    alias mute="pactl set-sink-mute 0 toggle"
     # lol sound on linux
     ;;
 esac
@@ -208,12 +182,14 @@ esac
 # GNURadio/PyBOMBS initiation
 [[ -f "$HOME/code/target/setup_env.sh" ]] && source "$HOME/code/target/setup_env.sh"
 
-#this exists solely to clean up after failed resques
-alias workerkill='ps -ef | grep "resque\|god\|server.pid" | grep -v grep | awk '"'"'{print $2}'"'"' | xargs kill -9'
-export EDITOR=vim
+
+[[ -f /usr/share/powerline/zsh/powerline.zsh ]] && . /usr/share/powerline/zsh/powerline.zsh
+
+[[ -e "${HOME}/.iterm2_shell_integration.zsh" ]] && source "${HOME}/.iterm2_shell_integration.zsh"
+
 ## Friggin' TRAMP
 [ $TERM = "dumb" ] && unsetopt zle && PS1='$ '
 TZ="US/Central"
 export TZ
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+export EDITOR=vim
