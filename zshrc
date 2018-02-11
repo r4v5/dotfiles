@@ -181,8 +181,8 @@ esac
 
 # GNURadio/PyBOMBS initiation
 [[ -f "$HOME/code/target/setup_env.sh" ]] && source "$HOME/code/target/setup_env.sh"
-
-
+[[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+# powerline/zsh
 [[ -f /usr/share/powerline/zsh/powerline.zsh ]] && . /usr/share/powerline/zsh/powerline.zsh
 
 [[ -e "${HOME}/.iterm2_shell_integration.zsh" ]] && source "${HOME}/.iterm2_shell_integration.zsh"
