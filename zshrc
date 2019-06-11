@@ -57,12 +57,6 @@ RPS1=%B%(1j.%j|.)$'$(vcs_info_wrapper)'%t%b
 # if we've got lesspipe, it sure is nice to have
 [[ -f lesspipe.sh ]] && export LESSOPEN="|lesspipe.sh %s"
 
-alias -g '...'='../..'
-alias -g '....'='../../..'
-alias -g '.....'='../../../..'
-alias -g '......'='../../../../..'
-alias -g '.......'='../../../../../..'
-
 alias -g L='|less'
 alias -g G='|grep'
 alias -g T='|tail'
@@ -83,7 +77,7 @@ alias pks='source ~/.zshrc'     # make .zshrc into function instantly
 alias sl=ls
 
 # LS Options.
-alias ls="ls --color -F -b -h"
+alias ls="ls -F -b -h"
 
 function ir { ps aux | grep $1 | grep -v grep }
 function tz { tar -xzvf "$1" }
@@ -100,15 +94,7 @@ function chpwd {
 }
 
 bindkey -e
-
-# ITYOOL 2014 I still need to define this
-bindkey "^?" backward-delete-char
 bindkey "^[[3~" delete-char
-bindkey '^[[7~' beginning-of-line
-bindkey '^[[8~' end-of-line
-bindkey '^[[5~' beginning-of-buffer-or-history
-bindkey '^[[6~' end-of-buffer-or-history
-
 setopt nonomatch
 setopt nohup
 
@@ -181,15 +167,24 @@ esac
 
 # GNURadio/PyBOMBS initiation
 [[ -f "$HOME/code/target/setup_env.sh" ]] && source "$HOME/code/target/setup_env.sh"
+
+# Rust if you got rust
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+
 # powerline/zsh
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 [[ -f /usr/share/powerline/zsh/powerline.zsh ]] && . /usr/share/powerline/zsh/powerline.zsh
+[[ -f /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh ]] && . /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
 
 [[ -e "${HOME}/.iterm2_shell_integration.zsh" ]] && source "${HOME}/.iterm2_shell_integration.zsh"
-
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
 ## Friggin' TRAMP
 [ $TERM = "dumb" ] && unsetopt zle && PS1='$ '
 TZ="US/Central"
 export TZ
 
+[ -s "${HOME}/.local_vars" ] && . "${HOME}/.local_vars"  # This loads machine-specific local vars outside of version control
+alias aws='aws-mfa --log-level ERROR --duration 86400 && aws'
 export EDITOR=vim
