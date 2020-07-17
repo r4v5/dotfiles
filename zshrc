@@ -13,10 +13,10 @@ typeset -U path
 [ -z "$HOSTNAME" ] && HOSTNAME=$(hostname -s)
 # prompt colors, whut!
 case $HOSTNAME in
-  Mason*)
+  M*)
     HOSTCOLOR=green
     ;;
-  cubie*)
+  r4*)
     HOSTCOLOR=grey
     ;;
   ganglia)
@@ -25,7 +25,7 @@ case $HOSTNAME in
   hippocampus)
     HOSTCOLOR=cyan
     ;;
-  do*)
+  hella*)
     HOSTCOLOR=green
     ;;
   cortex*)
@@ -48,7 +48,6 @@ vcs_info_wrapper() {
 }
 
 PS1="%{$fg_bold[$HOSTCOLOR]%}%h%(?..(%?%)) %m %{$fg_bold[blue]%}%1d %#%b%o %{$terminfo[sgr0]%}"
-RPS1=%B%(1j.%j|.)$'$(vcs_info_wrapper)'%t%b
 
 # Keychain goodies
 [ -f "$(which keychain 2>/dev/null)" ] && keychain -q $HOME/.ssh/*_[dr]sa
@@ -63,7 +62,6 @@ alias -g T='|tail'
 alias -g H='|head'
 alias -g N='&>/dev/null&'
 
-[[ -f $(which screen 2>/dev/null) ]] && alias sc='screen -Ux'
 [[ -f $(which tmux 2>/dev/null) ]] && alias sc='tmux attach'
 alias psaux='ps -aux G'
 alias cl='clear'
@@ -76,18 +74,12 @@ alias mkdir='nocorrect mkdir'	# no spelling correction on mkdir
 alias pks='source ~/.zshrc'     # make .zshrc into function instantly
 alias sl=ls
 
-# LS Options.
-alias ls="ls -F -b -h"
-
-function ir { ps aux | grep $1 | grep -v grep }
-function tz { tar -xzvf "$1" }
-function bz { tar -xjvf $1 }
-
 # AUTOMATIC ls on chpwd *if* directory isn't too big.
 function chpwd {
   integer ls_lines="$(ls -C | wc -l)"
-  if [ $ls_lines -eq 0 ]; then
-  elif [ $ls_lines -le 18 ]; then
+  if [[ $ls_lines -eq 0 ]]; then
+    true
+  elif [[ $ls_lines -le 18 ]]; then
     ls
     echo "$fg[green] --[ Items: `ls | wc -l` ] --$reset_color"
   fi
@@ -104,29 +96,6 @@ zstyle -e ':completion:*:ssh:*' hosts \
 zstyle -e ':completion:*:scp:*' hosts \
   'reply=($(sed -e "/^#/d" -e "s/ .*\$//" -e "s/,/ /g" \
   ~/.ssh/known_hosts 2>/dev/null))'
-
-
-# Functions for displaying good stuff in a terminal title
-case $TERM in
-  screen*|tmux*)
-    precmd () {
-      print -Pn "\033]0;%n@%m%#  %~ %l  %w :: %T\a"
-      printf "\033kzsh\033\\"
-    }
-    preexec () {
-      print -Pn "\033]0;%n@%m%#  <$1>  %~ %l  %w :: %T\a"
-      printf "\033k$(echo "$1")\033\\"
-    }
-  ;;
-  xterm*)
-    precmd () {
-      print -Pn "\033]0;%n@%m%#  %~ %l  %w :: %T\a"
-    }
-    preexec () {
-      print -Pn "\033]0;%n@%m%#  <$1>  %~ %l  %w :: %T\a"
-    }
-  ;;
-esac
 
 # The following lines were added by compinstall
 
@@ -171,17 +140,15 @@ esac
 # Rust if you got rust
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 
-# powerline/zsh
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-[[ -f /usr/share/powerline/zsh/powerline.zsh ]] && . /usr/share/powerline/zsh/powerline.zsh
-[[ -f /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh ]] && . /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
+# starship
+[[ -f "$(which starship)" ]] && eval "$(starship init zsh)"
+
 
 [[ -e "${HOME}/.iterm2_shell_integration.zsh" ]] && source "${HOME}/.iterm2_shell_integration.zsh"
 export NVM_DIR="$HOME/.nvm"
 [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
 [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
-## Friggin' TRAMP
-[ $TERM = "dumb" ] && unsetopt zle && PS1='$ '
+
 TZ="US/Central"
 export TZ
 
