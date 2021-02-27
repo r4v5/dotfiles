@@ -8,6 +8,17 @@ typeset -U path
 
 [ -z "$HOSTNAME" ] && HOSTNAME=$(hostname -s)
 
+# Set history options
+HISTFILE=~/.zsh_history
+HISTSIZE=1000000000
+SAVEHIST=1000000000
+setopt EXTENDED_HISTORY
+setopt INC_APPEND_HISTORY_TIME
+setopt HIST_FIND_NO_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_VERIFY
+
+
 alias mv='nocorrect mv -i'      # no spelling correction on mv
 alias mkdir='nocorrect mkdir'	# no spelling correction on mkdir
 [[ -f $(which vim) ]] && alias vi='vim'
