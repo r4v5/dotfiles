@@ -3,8 +3,6 @@ tap "homebrew/cask"
 tap "homebrew/cask-fonts"
 tap "homebrew/core"
 tap "thoughtbot/formulae"
-# Tool for reverse engineering 3rd party, closed, binary Android apps
-brew "apktool"
 # Improved top (interactive process viewer)
 brew "htop"
 # Mac App Store command-line interface
