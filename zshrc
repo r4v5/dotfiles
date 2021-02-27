@@ -69,7 +69,7 @@ case `uname` in
     alias mute="osascript -e 'set volume output muted true'"
     ;;
   "Linux")
-    alias mute="pactl set-sink-mute $(pactl info | grep "Default Sink" | cut -d " " -f3) toggle"
+    [[ -f $(which pactl 2>/dev/null) ]] && alias mute="pactl set-sink-mute $(pactl info | grep "Default Sink" | cut -d " " -f3) toggle"
     ;;
 esac
 
