@@ -1,9 +1,5 @@
-#.zshrc, created by r4v5 having ripped off a significant chunk from blcknight,
-# who took a significant chunk from someone else, and fucked with by compinstall.
-
-# i like color
+# zshell configurations
 autoload colors zsh/terminfo
-autoload -Uz vcs_info
 colors
 setopt promptsubst
 [ -d /usr/local/share/zsh-completions ] && fpath=(/usr/local/share/zsh-completions $fpath)
@@ -11,63 +7,8 @@ setopt promptsubst
 typeset -U path
 
 [ -z "$HOSTNAME" ] && HOSTNAME=$(hostname -s)
-# prompt colors, whut!
-case $HOSTNAME in
-  M*)
-    HOSTCOLOR=green
-    ;;
-  r4*)
-    HOSTCOLOR=grey
-    ;;
-  ganglia)
-    HOSTCOLOR=white
-    ;;
-  hippocampus)
-    HOSTCOLOR=cyan
-    ;;
-  hella*)
-    HOSTCOLOR=green
-    ;;
-  cortex*)
-    HOSTCOLOR=magenta
-    ;;
-  *)
-    HOSTCOLOR=yellow
-    ;;
-esac
 
-[[ $LOGNAME == "root" ]] && HOSTCOLOR=red
-
-zstyle ':vcs_info:*' formats '%F{5}[%F{2}%b%F{5}]%f'
-
-vcs_info_wrapper() {
-  vcs_info
-  if [ -n "$vcs_info_msg_0_" ]; then
-    echo "%{$fg[grey]%}${vcs_info_msg_0_}%{$reset_color%}$del"
-  fi
-}
-
-PS1="%{$fg_bold[$HOSTCOLOR]%}%h%(?..(%?%)) %m %{$fg_bold[blue]%}%1d %#%b%o %{$terminfo[sgr0]%}"
-
-# Keychain goodies
-[ -f "$(which keychain 2>/dev/null)" ] && keychain -q $HOME/.ssh/*_[dr]sa
-[ -f "${HOME}/.keychain/`hostname`-sh" ] && source $HOME/.keychain/`hostname`-sh
-
-# if we've got lesspipe, it sure is nice to have
-[[ -f lesspipe.sh ]] && export LESSOPEN="|lesspipe.sh %s"
-
-alias -g L='|less'
-alias -g G='|grep'
-alias -g T='|tail'
-alias -g H='|head'
-alias -g N='&>/dev/null&'
-
-[[ -f $(which tmux 2>/dev/null) ]] && alias sc='tmux attach'
-alias psaux='ps -aux G'
-alias cl='clear'
-alias cls=cl
 alias mv='nocorrect mv -i'      # no spelling correction on mv
-[[ -f $(which rsync) ]] && alias cp='rsync --progress'
 alias mkdir='nocorrect mkdir'	# no spelling correction on mkdir
 [[ -f $(which vim) ]] && alias vi='vim'
 [[ -f $(which mvim 2>/dev/null) ]] && alias vim='mvim -v'
@@ -90,12 +31,10 @@ bindkey "^[[3~" delete-char
 setopt nonomatch
 setopt nohup
 
-zstyle -e ':completion:*:ssh:*' hosts \
-  'reply=($(sed -e "/^#/d" -e "s/ .*\$//" -e "s/,/ /g" \
-  ~/.ssh/known_hosts 2>/dev/null))'
-zstyle -e ':completion:*:scp:*' hosts \
-  'reply=($(sed -e "/^#/d" -e "s/ .*\$//" -e "s/,/ /g" \
-  ~/.ssh/known_hosts 2>/dev/null))'
+# set window titles
+function precmd () {
+  print -Pn "\033]0;%n@%m: %~\007"
+}
 
 # The following lines were added by compinstall
 
@@ -109,10 +48,14 @@ zstyle :compinstall filename '/home/r4v5/.zshrc'
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
+
+# Add ~/bin for local packages
 [[ -d "$HOME/bin" ]] && path=($HOME/bin "$path[@]")
 
-[[ -d "$HOME/.rbenv/bin" ]] && path=($HOME/.rbenv/bin "$path[@]")
+# Ruby
+# [[ -d "$HOME/.rbenv/bin" ]] && path=($HOME/.rbenv/bin "$path[@]")
 [[ -f  $(which rbenv 2>/dev/null) ]] && eval "$(rbenv init -)"
+[[ -f "$HOME/.rake_completion.zsh" ]] && source $HOME/.rake_completion.zsh
 
 # Pyenv stuffs
 [[ -e $(which pyenv 2> /dev/null) ]] && eval "$(pyenv init -)"
@@ -120,17 +63,13 @@ compinit
 # golang
 [ -d /usr/local/opt/go/libexec/bin ] && path+=/usr/local/opt/go/libexec/bin
 
-
-[[ -f "$HOME/.rake_completion.zsh" ]] && source $HOME/.rake_completion.zsh
-
 # Command line volume control
 case `uname` in
   "Darwin")
     alias mute="osascript -e 'set volume output muted true'"
     ;;
   "Linux")
-    alias mute="pactl set-sink-mute 0 toggle"
-    # lol sound on linux
+    alias mute="pactl set-sink-mute $(pactl info | grep "Default Sink" | cut -d " " -f3) toggle"
     ;;
 esac
 
@@ -143,15 +82,18 @@ esac
 # starship
 [[ -f "$(which starship)" ]] && eval "$(starship init zsh)"
 
-
 [[ -e "${HOME}/.iterm2_shell_integration.zsh" ]] && source "${HOME}/.iterm2_shell_integration.zsh"
-export NVM_DIR="$HOME/.nvm"
-[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
 
+# GPG agent stuff: gpg agent is replacing ssh-agent but with smartcard/yubikey auth
+if [[ $(which gpg-agent) ]] ; then
+    gpgconf --launch gpg-agent 2>/dev/null
+    export GPG_TTY=$(tty)
+    export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket 2>/dev/null)"
+    gpg-connect-agent /bye >/dev/null
+fi
 TZ="US/Central"
 export TZ
 
 [ -s "${HOME}/.local_vars" ] && . "${HOME}/.local_vars"  # This loads machine-specific local vars outside of version control
-alias aws='aws-mfa --log-level ERROR --duration 86400 && aws'
+# alias aws='aws-mfa --log-level ERROR --duration 86400 && aws'
 export EDITOR=vim
