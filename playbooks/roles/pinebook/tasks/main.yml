@@ -1,0 +1,26 @@
+---
+
+- name: install basic packages
+  package:
+    name: vim,zsh,starship,tmux,htop,base-devel,yay
+    state: present
+
+- name: Create the `aur_builder` user
+  ansible.builtin.user:
+    name: aur_builder
+    create_home: yes
+    group: wheel
+
+- name: Allow the `aur_builder` user to run `sudo pacman` without a password
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers.d/11-install-aur_builder
+    line: 'aur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman'
+    create: yes
+    validate: 'visudo -cf %s'
+
+- name: Install rcm
+  become_user: aur_builder
+  kewlfft.aur.aur:
+    use: yay
+    name:
+      - rcm

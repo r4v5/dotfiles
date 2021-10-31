@@ -1,0 +1,10 @@
+---
+- name: install shairport-sync
+  package:
+    name: shairport-sync
+    state: present
+
+#- name: configure shairport-sync
+#  template:
+#    src: shairport-sync.conf.j2
+#    dest: /etc/shairport-sync.conf

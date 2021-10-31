@@ -1,0 +1,8 @@
+---
+- name: set up audio receiver
+  hosts: audio
+  tasks:
+  - name: install shairport
+    include_role:
+      name: audio
+

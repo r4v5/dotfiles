@@ -1,0 +1,9 @@
+---
+
+- name: Manjaro OOB setup
+  hosts: manjaro
+  tasks:
+    - name: pinebook setup
+      include_role:
+        name: pinebook
+
