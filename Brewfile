@@ -17,10 +17,13 @@ brew "tmux"
 # Internet file retriever
 brew "wget"
 # management suite for dotfiles
-cask "adoptopenjdk"
-cask "docker"
 cask "font-fira-code"
 cask "jetbrains-toolbox"
 cask "spotify"
 cask "xscreensaver"
+cask "firefox"
+cask "discord"
+cask "1password"
+cask "signal"
 mas "Slack", id: 803453959
+
