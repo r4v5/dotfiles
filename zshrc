@@ -96,12 +96,19 @@ esac
 [[ -e "${HOME}/.iterm2_shell_integration.zsh" ]] && source "${HOME}/.iterm2_shell_integration.zsh"
 
 # GPG agent stuff: gpg agent is replacing ssh-agent but with smartcard/yubikey auth
-if [[ $(which gpg-agent) ]] ; then
-    gpgconf --launch gpg-agent 2>/dev/null
-    export GPG_TTY=$(tty)
-    export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket 2>/dev/null)"
-    gpg-connect-agent /bye >/dev/null
-fi
+case `uname` in
+  "Linux")
+    if [[ $(which gpg-agent) ]] ; then
+        gpgconf --launch gpg-agent 2>/dev/null
+        export GPG_TTY=$(tty)
+        export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket 2>/dev/null)"
+        gpg-connect-agent /bye >/dev/null
+    fi
+    ;;
+  "Darwin")
+    ssh-add -K 
+  ;;
+esac
 TZ="US/Central"
 export TZ
 
