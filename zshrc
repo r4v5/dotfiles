@@ -1,9 +1,11 @@
+
 # zshell configurations
 autoload colors zsh/terminfo
 colors
 setopt promptsubst
-[ -d /usr/local/share/zsh-completions ] && fpath=(/usr/local/share/zsh-completions $fpath)
-
+fpath+=/usr/local/share/zsh-completions
+fpath+=/opt/homebrew/share/zsh/site-functions
+fpath+=~/.zfunc
 typeset -U path
 
 [ -z "$HOSTNAME" ] && HOSTNAME=$(hostname -s)
@@ -74,6 +76,12 @@ compinit
 # golang
 [ -d /usr/local/opt/go/libexec/bin ] && path+=/usr/local/opt/go/libexec/bin
 
+# Allow editing the current command line in vim
+autoload -z edit-command-line
+zle -N edit-command-line
+bindkey "^X^E" edit-command-line
+
+
 # Command line volume control
 case `uname` in
   "Darwin")
@@ -95,16 +103,6 @@ esac
 
 [[ -e "${HOME}/.iterm2_shell_integration.zsh" ]] && source "${HOME}/.iterm2_shell_integration.zsh"
 
-# GPG agent stuff: gpg agent is replacing ssh-agent but with smartcard/yubikey auth
-if [[ $(which gpg-agent) ]] ; then
-    gpgconf --launch gpg-agent 2>/dev/null
-    export GPG_TTY=$(tty)
-    export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket 2>/dev/null)"
-    gpg-connect-agent /bye >/dev/null
-fi
-TZ="US/Central"
-export TZ
-
 [ -s "${HOME}/.local_vars" ] && . "${HOME}/.local_vars"  # This loads machine-specific local vars outside of version control
-# alias aws='aws-mfa --log-level ERROR --duration 86400 && aws'
+
 export EDITOR=vim
